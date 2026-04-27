@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Tower Defense JS</title>
+    <style>
+        body {
+            margin: 0;
+            background: #222;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        canvas {
+            background: #4a8c4a; /* Цвет травы */
+            border: 2px solid #333;
+            display: block;
+        }
+        #ui-layer {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            pointer-events: none;
+            text-shadow: 1px 1px 2px black;
+        }
+        .stat {
+            font-size: 20px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        #wave-status {
+            font-size: 16px;
+            color: #f1c40f;
+            margin-top: 5px;
+        }
+        #pause-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            pointer-events: auto;
+            background: #e67e22;
+            border: 1px solid #d35400;
+        }
+        #pause-btn:hover {
+            background: #d35400;
+        }
+        #pause-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            pointer-events: auto;
+        }
+        #pause-overlay h2 {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        #pause-overlay button {
+            font-size: 24px;
+            padding: 15px 40px;
+            background: #27ae60;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #pause-overlay button:hover {
+            background: #2ecc71;
+        }
+        #controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #444;
+            color: white;
+            border: 1px solid #666;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #666;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            display: none;
+        }
+        h1 { margin-top: 0; color: #ff4444; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <div id="ui-layer">
+        <div class="stat">❤️ Жизни: <span id="lives-display">10</span></div>
+        <div class="stat">💰 Деньги: <span id="money-display">100</span></div>
+        <div class="stat">🌊 Волна: <span id="wave-display">1</span></div>
+        <div id="wave-status">Ожидание...</div>
+    </div>
+
+    <button id="pause-btn" onclick="togglePause()">⏸ Пауза</button>
+
+    <div id="pause-overlay">
+        <h2>ПАУЗА</h2>
+        <button onclick="togglePause()">▶ Продолжить</button>
+    </div>
+
+    <div id="game-over">
+        <h1>GAME OVER</h1>
+        <p>Вы продержались до волны <span id="final-wave">0</span></p>
+        <button onclick="location.reload()">Играть снова</button>
+    </div>
+</div>
+
+<div id="controls">
+    <button id="btn-tower" onclick="selectTowerType('basic')">⚔️ Башня (50$)</button>
+    <button id="btn-fast" onclick="selectTowerType('fast')">🏹 Скорострел (120$)</button>
+    <button id="btn-sniper" onclick="selectTowerType('sniper')">🎯 Снайпер (200$)</button>
+    <button onclick="cancelSelection()">❌ Отмена</button>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
